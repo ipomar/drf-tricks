@@ -9,5 +9,8 @@ class Post(models.Model):
     title = models.CharField(max_length=200)
     text = models.TextField(validators=[MaxLengthValidator(50000)])
 
+    is_banned = models.ForeignKey(to=settings.AUTH_USER_MODEL, related_name='banned_posts')
+    banned_on = models.DateTimeField()
+
     class Meta:
         ordering = ['-id']
