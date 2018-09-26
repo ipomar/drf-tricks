@@ -1,20 +1,38 @@
+from django.contrib.auth.models import User
 from rest_framework import serializers
 
-from apps.posts.models import Post
+from apps.posts.api.fields import CategorySerializerField
+from apps.posts.models import Post, Category
+
+
+class AuthorSerializer(serializers.ModelSerializer):
+
+    name = serializers.SerializerMethodField()
+
+    class Meta:
+        model = User
+        fields = ['id', 'name']
+
+    def get_name(self, instance):
+        return ' '.join([
+            w for w in
+            [instance.first_name, instance.last_name]
+            if w
+        ])
+
+
+class CategorySerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Category
+        fields = '__all__'
 
 
 class PostContentSerializer(serializers.ModelSerializer):
 
-    class Meta:
-        model = Post
-        exclude_fields = [
-            'is_banned', 'banned_by', 'banned_on'
-        ]
-
-
-class PostBanSerializer(serializers.ModelSerializer):
+    author = AuthorSerializer(read_only=True)
+    category = CategorySerializerField(required=False, allow_null=True)
 
     class Meta:
         model = Post
-        fields = ['is_banned', 'banned_by', 'banned_on']
-        read_only_fields = ['banned_by', 'banned_on']
+        fields = ['id', 'author', 'created_on', 'title', 'text', 'category']
