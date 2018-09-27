@@ -15,7 +15,7 @@ class PostListCreate(generics.ListCreateAPIView):
         IsAuthenticated,
     )
     serializer_class = PostContentSerializer
-    queryset = Post.objects.all()
+    queryset = Post.objects.prefetch_related('author')
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
@@ -41,4 +41,4 @@ class PostDetails(generics.RetrieveUpdateDestroyAPIView, PostRetriever):
     serializer_class = PostContentSerializer
 
     def get_object(self):
-        return self.post
+        return self.post_instance

@@ -5,7 +5,7 @@ from apps.posts.api.fields import CategorySerializerField
 from apps.posts.models import Post, Category
 
 
-class AuthorSerializer(serializers.ModelSerializer):
+class UserSerializer(serializers.ModelSerializer):
 
     name = serializers.SerializerMethodField()
 
@@ -30,7 +30,7 @@ class CategorySerializer(serializers.ModelSerializer):
 
 class PostContentSerializer(serializers.ModelSerializer):
 
-    author = AuthorSerializer(read_only=True)
+    author = UserSerializer(read_only=True)
     category = CategorySerializerField(required=False, allow_null=True)
 
     class Meta:

@@ -9,8 +9,15 @@ class PostRetriever(generics.GenericAPIView):
     _post = None
 
     @property
-    def post(self):
+    def post_instance(self):
         assert 'post_id' in self.kwargs
         if not self._post:
-            self._post = get_object_or_404(Post, id=self.kwargs.get('post_id'))
+            self._post = get_object_or_404(
+                Post.objects.prefetch_related(
+                    'author',
+                    'comment_set',
+                    'comment_set__author'
+                ),
+                id=self.kwargs.get('post_id')
+            )
         return self._post

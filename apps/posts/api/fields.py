@@ -9,5 +9,5 @@ class CategorySerializerField(serializers.Field):
 
     def to_internal_value(self, data):
         from apps.posts.models import Category
-        id = data.get('id') if type(data) == dict else None
-        return Category.objects.filter(id=id).first()
+        category_id = data.get('id') if type(data) == dict else None
+        return Category.objects.filter(id=category_id).first()
