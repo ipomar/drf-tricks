@@ -22,6 +22,6 @@ class Comment(models.Model):
         if self.is_banned:
             if not self.banned_by:
                 raise RuntimeError("'banned_by' not set when 'is_banned' is True")
-            self.banned_on = self.banned_by or timezone.datetime.now()
+            self.banned_on = timezone.datetime.now() or timezone.datetime.now()
 
         super().save(*args, **kwargs)

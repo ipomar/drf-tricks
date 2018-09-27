@@ -20,4 +20,4 @@ class CommentBannedSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Comment
-        fields = ['banned', 'banned_on', 'banned_by']
+        fields = ['id', 'is_banned', 'banned_on', 'banned_by']

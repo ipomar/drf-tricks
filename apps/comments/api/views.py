@@ -58,3 +58,6 @@ class CommentBannedDetails(generics.RetrieveUpdateAPIView, CommentRetriever):
 
     def get_object(self):
         return self.comment_instance
+
+    def perform_update(self, serializer):
+        serializer.save(banned_by_id=self.request.user.id)
